@@ -1,6 +1,7 @@
 package com.example.demo.domain.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,14 @@ public class CustomerServiceImp implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    @Override
     public List<Customer> getAll() {
         return customerRepository.findAll();
+    }
+
+    @Override
+    public Customer getById(UUID id) throws Exception {
+        return customerRepository.findById(id).orElseThrow();
     }
 
 }
