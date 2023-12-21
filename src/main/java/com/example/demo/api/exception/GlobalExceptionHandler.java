@@ -16,7 +16,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<GlobalExceptionDTO> illegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new GlobalExceptionDTO(
                 Instant.now(),
-                404,
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.name(),
                 e.getMessage()));
     }
 
