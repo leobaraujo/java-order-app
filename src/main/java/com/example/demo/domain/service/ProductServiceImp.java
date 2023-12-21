@@ -1,6 +1,7 @@
 package com.example.demo.domain.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,11 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<Product> getAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public Product getById(UUID id) throws Exception {
+        return productRepository.findById(id).orElseThrow();
     }
 
 }
