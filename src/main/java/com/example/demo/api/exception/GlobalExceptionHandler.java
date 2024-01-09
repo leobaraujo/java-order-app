@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     // Invalid request body
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<GlobalExceptionDTO> constraintViolationException(ConstraintViolationException e) {
-        return badRequestResponse(HttpStatus.BAD_GATEWAY, e.getMessage());
+        return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     private ResponseEntity<GlobalExceptionDTO> badRequestResponse(HttpStatus status, String message) {
@@ -39,7 +39,6 @@ public class GlobalExceptionHandler {
                 status.value(),
                 status.name(),
                 message));
-
     }
 
 }
