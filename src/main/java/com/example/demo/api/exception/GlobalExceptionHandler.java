@@ -17,19 +17,19 @@ public class GlobalExceptionHandler {
 
     // Invalid path variable
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<GlobalExceptionDTO> illegalArgumentException(IllegalArgumentException e) {
+    public ResponseEntity<GlobalExceptionDTO> illegalArgumentHandler(IllegalArgumentException e) {
         return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     // Missing request body
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<GlobalExceptionDTO> httpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public ResponseEntity<GlobalExceptionDTO> httpMessageNotReadableHandler(HttpMessageNotReadableException e) {
         return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     // Invalid request body
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<GlobalExceptionDTO> constraintViolationException(ConstraintViolationException e) {
+    public ResponseEntity<GlobalExceptionDTO> constraintViolationHandler(ConstraintViolationException e) {
         return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
