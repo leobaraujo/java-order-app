@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.demo.api.dto.NewProductDTO;
 import com.example.demo.domain.entity.Product;
+import com.example.demo.domain.entity.ProductCategory;
 import com.example.demo.service.ProductService;
 
 @RestController
@@ -74,6 +75,17 @@ public class ProductApi {
         productService.deleteProduct(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<String[]> getAllCategories() {
+        String[] categories = new String[ProductCategory.values().length];
+
+        for (int i = 0; i < ProductCategory.values().length; i++) {
+            categories[i] = ProductCategory.values()[i].toString();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(categories);
     }
 
 }
