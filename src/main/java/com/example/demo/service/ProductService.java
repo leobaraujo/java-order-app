@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.api.dto.NewProductDTO;
 import com.example.demo.domain.entity.Product;
+import com.example.demo.domain.exception.InvalidProductCategoryException;
 
 @Service
 public interface ProductService {
@@ -16,9 +17,9 @@ public interface ProductService {
 
     public Product getById(UUID id) throws NoSuchElementException;
 
-    public Product createProduct(NewProductDTO newProduct);
+    public Product createProduct(NewProductDTO newProduct) throws InvalidProductCategoryException;
 
-    public void updateProuct(UUID id, NewProductDTO updatedProduct) throws NoSuchElementException;
+    public void updateProuct(UUID id, NewProductDTO updatedProduct) throws InvalidProductCategoryException;
 
     public void deleteProduct(UUID id);
 

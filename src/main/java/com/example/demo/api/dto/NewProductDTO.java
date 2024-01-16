@@ -8,6 +8,5 @@ public record NewProductDTO(
         @NotNull Double buyPrice,
         @NotNull Double sellPrice,
         @NotBlank String imgUrl,
-        @NotNull Integer categoryIndex) {
-
+        @NotBlank String category) {
 }
