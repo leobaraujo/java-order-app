@@ -20,4 +20,6 @@ public interface ProductService {
 
     public void updateProuct(UUID id, NewProductDTO updatedProduct) throws NoSuchElementException;
 
+    public void deleteProduct(UUID id);
+
 }

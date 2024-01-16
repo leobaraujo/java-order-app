@@ -60,4 +60,9 @@ public class ProductServiceImp implements ProductService {
         productRepository.save(currentProduct);
     }
 
+    @Override
+    public void deleteProduct(UUID id) {
+        productRepository.deleteById(id);
+    }
+
 }
