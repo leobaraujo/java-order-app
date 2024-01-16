@@ -1,6 +1,7 @@
 package com.example.demo.domain.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Product getById(UUID id) throws Exception {
+    public Product getById(UUID id) throws NoSuchElementException {
         return productRepository.findById(id).orElseThrow();
     }
 
@@ -43,6 +44,20 @@ public class ProductServiceImp implements ProductService {
         product.setCategoryIndex(newProduct.categoryIndex());
 
         return productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void updateProuct(UUID id, NewProductDTO updatedProduct) throws NoSuchElementException {
+        Product currentProduct = getById(id);
+
+        currentProduct.setName(updatedProduct.name());
+        currentProduct.setBuyPrice(updatedProduct.buyPrice());
+        currentProduct.setSellPrice(updatedProduct.sellPrice());
+        currentProduct.setImgUrl(updatedProduct.imgUrl());
+        currentProduct.setCategoryIndex(updatedProduct.categoryIndex());
+
+        productRepository.save(currentProduct);
     }
 
 }
