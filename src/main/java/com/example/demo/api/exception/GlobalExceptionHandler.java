@@ -5,10 +5,12 @@ import java.time.Instant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.demo.api.dto.GlobalExceptionDTO;
+import com.example.demo.domain.exception.InvalidProductCategoryException;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -27,9 +29,20 @@ public class GlobalExceptionHandler {
         return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    // Invalid request body
+    // Missing field on request body
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<GlobalExceptionDTO> methodArgumentNotValidHandler(MethodArgumentNotValidException e) {
+        return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    // Invalid request body field type
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<GlobalExceptionDTO> constraintViolationHandler(ConstraintViolationException e) {
+        return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidProductCategoryException.class)
+    public ResponseEntity<GlobalExceptionDTO> invalidProductCategoryHandler(InvalidProductCategoryException e) {
         return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 

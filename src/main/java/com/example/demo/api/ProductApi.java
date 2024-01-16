@@ -20,7 +20,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.demo.api.dto.NewProductDTO;
 import com.example.demo.domain.entity.Product;
 import com.example.demo.domain.entity.ProductCategory;
+import com.example.demo.domain.exception.InvalidProductCategoryException;
 import com.example.demo.service.ProductService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/product")
@@ -51,7 +54,7 @@ public class ProductApi {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody NewProductDTO newProductDTO) {
+    public ResponseEntity<Void> createProduct(@RequestBody @Valid NewProductDTO newProductDTO) throws InvalidProductCategoryException {
         Product createdProduct = productService.createProduct(newProductDTO);
         URI resourceLocation = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(createdProduct.getId()).toUri();
@@ -60,7 +63,7 @@ public class ProductApi {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> upadteProduct(@PathVariable UUID id, @RequestBody NewProductDTO updateProduct) {
+    public ResponseEntity<Void> upadteProduct(@PathVariable UUID id, @RequestBody @Valid NewProductDTO updateProduct) throws InvalidProductCategoryException {
         try {
             productService.updateProuct(id, updateProduct);
 
