@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Profile("development")
+@Profile("dev")
 @Configuration
 @EnableWebSecurity
 public class DevSecurityConfig {
