@@ -101,4 +101,4 @@ INSERT INTO customer (id, number, status) VALUES ('a32d0c50-88cc-4ad5-91ec-1638c
 INSERT INTO customer (id, number, status) VALUES ('6d1a5f82-c08e-4851-821c-d49774f04050', 100, 'AVAILABLE');
 
 /* PRODUCT TABLE */
-INSERT INTO product (id, name, buy_price, sell_price, img_url, category_index) VALUES ('49677434-1020-43d1-b245-aa20e070156a', 'Bebida A', 5.0, 10.0, 'https://img.freepik.com/vetores-gratis/copo-de-agua-isolado_1368-2666.jpg', 0);
+INSERT INTO product (id, name, buy_price, sell_price, img_url, category) VALUES ('49677434-1020-43d1-b245-aa20e070156a', 'Bebida A', 5.0, 10.0, 'https://img.freepik.com/vetores-gratis/copo-de-agua-isolado_1368-2666.jpg', 'CERVEJA');

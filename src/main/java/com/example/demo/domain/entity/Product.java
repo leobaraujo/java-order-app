@@ -32,19 +32,19 @@ public class Product implements Serializable {
     private String imgUrl;
 
     @NotNull
-    private Integer categoryIndex;
+    private String category;
 
     public Product() {
     }
 
     public Product(UUID id, @NotBlank String name, @NotNull Double buyPrice, @NotNull Double sellPrice,
-            @NotBlank String imgUrl, @NotNull Integer categoryIndex) {
+            @NotBlank String imgUrl, @NotNull String category) {
         this.id = id;
         this.name = name;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
         this.imgUrl = imgUrl;
-        this.categoryIndex = categoryIndex;
+        this.category = category;
     }
 
     public UUID getId() {
@@ -87,12 +87,12 @@ public class Product implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public Integer getCategoryIndex() {
-        return categoryIndex;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategoryIndex(Integer categoryIndex) {
-        this.categoryIndex = categoryIndex;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @Override
