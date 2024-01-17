@@ -5,6 +5,5 @@ import java.time.Instant;
 public record GlobalExceptionDTO(
         Instant timestamp,
         Integer status,
-        String error,
-        String message) {
+        Object[] errors) {
 }

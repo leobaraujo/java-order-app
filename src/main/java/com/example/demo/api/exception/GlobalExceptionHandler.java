@@ -1,6 +1,8 @@
 package com.example.demo.api.exception;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +10,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.example.demo.api.dto.GlobalExceptionDTO;
+import com.example.demo.api.dto.InputFieldError;
 import com.example.demo.domain.exception.InvalidProductCategoryException;
 
 import jakarta.validation.ConstraintViolationException;
@@ -18,40 +22,49 @@ import jakarta.validation.ConstraintViolationException;
 public class GlobalExceptionHandler {
 
     // Invalid path variable
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<GlobalExceptionDTO> noResourceFoundHandler(NoResourceFoundException e) {
+        return badRequestResponse(HttpStatus.NOT_FOUND, new String[] { e.getMessage() });
+    }
+
+    // Invalid path variable type
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<GlobalExceptionDTO> illegalArgumentHandler(IllegalArgumentException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     // Missing request body
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<GlobalExceptionDTO> httpMessageNotReadableHandler(HttpMessageNotReadableException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     // Missing field on request body
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<GlobalExceptionDTO> methodArgumentNotValidHandler(MethodArgumentNotValidException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        List<InputFieldError> errors = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
+                .collect(Collectors.toList());
+
+        return badRequestResponse(HttpStatus.BAD_REQUEST, errors.toArray());
     }
 
-    // Invalid request body field type
+    // Invalid field type in request body
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<GlobalExceptionDTO> constraintViolationHandler(ConstraintViolationException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     @ExceptionHandler(InvalidProductCategoryException.class)
     public ResponseEntity<GlobalExceptionDTO> invalidProductCategoryHandler(InvalidProductCategoryException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
-    private ResponseEntity<GlobalExceptionDTO> badRequestResponse(HttpStatus status, String message) {
+    private ResponseEntity<GlobalExceptionDTO> badRequestResponse(HttpStatus status, Object[] errors) {
         return ResponseEntity.status(status).body(new GlobalExceptionDTO(
                 Instant.now(),
                 status.value(),
-                status.name(),
-                message));
+                errors));
     }
 
 }
