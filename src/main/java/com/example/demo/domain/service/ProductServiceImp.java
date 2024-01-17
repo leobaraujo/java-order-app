@@ -71,6 +71,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(UUID id) {
         productRepository.deleteById(id);
     }
