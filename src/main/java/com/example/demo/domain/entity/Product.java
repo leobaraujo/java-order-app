@@ -1,12 +1,17 @@
 package com.example.demo.domain.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,17 +39,22 @@ public class Product implements Serializable {
     @NotNull
     private String category;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private List<Order> orders = new ArrayList<>();
+
     public Product() {
     }
 
     public Product(UUID id, @NotBlank String name, @NotNull Double buyPrice, @NotNull Double sellPrice,
-            @NotBlank String imgUrl, @NotNull String category) {
+            @NotBlank String imgUrl, @NotNull String category, List<Order> orders) {
         this.id = id;
         this.name = name;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
         this.imgUrl = imgUrl;
         this.category = category;
+        this.orders = orders;
     }
 
     public UUID getId() {
@@ -93,6 +103,14 @@ public class Product implements Serializable {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
