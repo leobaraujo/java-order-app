@@ -1,6 +1,7 @@
 package com.example.demo.domain.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -27,13 +28,13 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public Customer getById(UUID id) throws Exception {
+    public Customer getById(UUID id) throws NoSuchElementException {
         return customerRepository.findById(id).orElseThrow();
     }
 
     @Override
     @Transactional
-    public CustomerStatus updateStatus(UUID id) throws Exception {
+    public CustomerStatus updateStatus(UUID id) throws NoSuchElementException {
         Customer customer = getById(id);
         CustomerStatus newStatus = CustomerStatus.AVAILABLE;
 

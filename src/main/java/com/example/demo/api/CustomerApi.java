@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class CustomerApi {
             Customer customer = customerService.getById(id);
 
             return ResponseEntity.status(HttpStatus.OK).body(customer);
-        } catch (Exception e) {
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -54,7 +55,7 @@ public class CustomerApi {
             }
 
             return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (Exception e) {
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
