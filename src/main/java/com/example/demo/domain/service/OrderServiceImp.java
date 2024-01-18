@@ -44,6 +44,11 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public List<Order> getAllByCustomerId(UUID id) {
+        return orderRepository.findAllByCustomerId(id);
+    }
+
+    @Override
     @Transactional
     public Order createOrder(NewOrderDTO newOrder) throws InvalidEntityIdException {
         try {

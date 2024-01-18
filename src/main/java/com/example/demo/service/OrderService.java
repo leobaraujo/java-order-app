@@ -18,6 +18,8 @@ public interface OrderService {
 
     public Order getById(UUID id) throws NoSuchElementException;
 
+    public List<Order> getAllByCustomerId(UUID id);
+
     public Order createOrder(NewOrderDTO newOrder) throws InvalidEntityIdException;
 
     public void updateOrder(UUID id, UpdateOrderDTO updateOrderDTO) throws NoSuchElementException;
