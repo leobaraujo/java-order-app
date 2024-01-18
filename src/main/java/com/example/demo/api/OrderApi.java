@@ -53,6 +53,13 @@ public class OrderApi {
         }
     }
 
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<List<Order>> getAllByCustomerId(@PathVariable UUID id) {
+        List<Order> customerOrders = orderService.getAllByCustomerId(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(customerOrders);
+    }
+
     @PostMapping
     public ResponseEntity<Void> createOrder(@RequestBody @Valid NewOrderDTO newOrderDTO)
             throws InvalidEntityIdException {
