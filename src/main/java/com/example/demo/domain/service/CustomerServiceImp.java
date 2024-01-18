@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.domain.entity.Customer;
 import com.example.demo.domain.entity.CustomerStatus;
 import com.example.demo.domain.repository.CustomerRepository;
+import com.example.demo.domain.repository.OrderRepository;
 import com.example.demo.service.CustomerService;
 
 import jakarta.transaction.Transactional;
@@ -17,9 +18,11 @@ import jakarta.transaction.Transactional;
 public class CustomerServiceImp implements CustomerService {
 
     private CustomerRepository customerRepository;
+    private OrderRepository orderRepository;
 
-    public CustomerServiceImp(CustomerRepository customerRepository) {
+    public CustomerServiceImp(CustomerRepository customerRepository, OrderRepository orderRepository) {
         this.customerRepository = customerRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -43,6 +46,10 @@ public class CustomerServiceImp implements CustomerService {
                 newStatus = i + 1 < CustomerStatus.values().length ? CustomerStatus.values()[i + 1] : CustomerStatus.AVAILABLE;
                 break;
             }
+        }
+
+        if (newStatus.equals(CustomerStatus.AVAILABLE)) {
+            orderRepository.deleteAllByCustomerId(customer.getId());
         }
 
         customer.setStatus(newStatus.toString());

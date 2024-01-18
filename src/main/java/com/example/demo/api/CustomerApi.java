@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.entity.Customer;
-import com.example.demo.domain.entity.CustomerStatus;
 import com.example.demo.service.CustomerService;
 
 @RestController
@@ -47,12 +46,7 @@ public class CustomerApi {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateStatus(@PathVariable UUID id) {
         try {
-            CustomerStatus newStatus = customerService.updateStatus(id);
-
-            if (newStatus.equals(CustomerStatus.AVAILABLE)) {
-                // TO DO: Delete all orders from customer
-                System.out.println("ALL ORDERS REMOVED FROM CUSTOMER: " + id.toString());
-            }
+            customerService.updateStatus(id);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {

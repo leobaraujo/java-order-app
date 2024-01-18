@@ -11,4 +11,6 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
 
     public Optional<Order> findByProductIdAndCustomerId(UUID productId, UUID customerId);
 
+    public void deleteAllByCustomerId(UUID customerId);
+
 }
