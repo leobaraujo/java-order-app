@@ -14,6 +14,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.example.demo.api.dto.GlobalExceptionDTO;
 import com.example.demo.api.dto.InputFieldError;
+import com.example.demo.domain.exception.InvalidEntityIdException;
 import com.example.demo.domain.exception.InvalidProductCategoryException;
 
 import jakarta.validation.ConstraintViolationException;
@@ -57,6 +58,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidProductCategoryException.class)
     public ResponseEntity<GlobalExceptionDTO> invalidProductCategoryHandler(InvalidProductCategoryException e) {
+        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+    }
+
+    @ExceptionHandler(InvalidEntityIdException.class)
+    public ResponseEntity<GlobalExceptionDTO> invalidEntityIdHandler(InvalidEntityIdException e) {
         return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
