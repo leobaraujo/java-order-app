@@ -4,13 +4,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import org.springframework.stereotype.Service;
-
 import com.example.demo.api.dto.NewProductDTO;
 import com.example.demo.domain.entity.Product;
 import com.example.demo.domain.exception.InvalidProductCategoryException;
 
-@Service
 public interface ProductService {
 
     public List<Product> getAll();
