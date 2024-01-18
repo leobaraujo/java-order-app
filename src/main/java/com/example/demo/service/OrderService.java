@@ -22,4 +22,6 @@ public interface OrderService {
 
     public void updateOrder(UUID id, UpdateOrderDTO updateOrderDTO) throws NoSuchElementException;
 
+    public void deleteOrderById(UUID id);
+
 }

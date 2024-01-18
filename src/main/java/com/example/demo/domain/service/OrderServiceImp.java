@@ -96,6 +96,12 @@ public class OrderServiceImp implements OrderService {
         }
     }
 
+    @Override
+    @Transactional
+    public void deleteOrderById(UUID id) {
+        orderRepository.deleteById(id);
+    }
+
     private boolean existsProductOnCustomer(UUID productId, UUID customerId) {
         return orderRepository.findByProductIdAndCustomerId(productId, customerId).isPresent();
     }
