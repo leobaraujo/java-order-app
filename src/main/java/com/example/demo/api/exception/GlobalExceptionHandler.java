@@ -2,6 +2,7 @@ package com.example.demo.api.exception;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,11 @@ public class GlobalExceptionHandler {
     // Invalid field type in request body
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<GlobalExceptionDTO> constraintViolationHandler(ConstraintViolationException e) {
+        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<GlobalExceptionDTO> noSuchElementHandler(NoSuchElementException e) {
         return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
