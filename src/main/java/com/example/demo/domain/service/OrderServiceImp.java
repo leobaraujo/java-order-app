@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.api.dto.NewOrderDTO;
 import com.example.demo.api.dto.UpdateOrderDTO;
 import com.example.demo.domain.entity.Customer;
+import com.example.demo.domain.entity.CustomerStatus;
 import com.example.demo.domain.entity.Order;
 import com.example.demo.domain.entity.Product;
 import com.example.demo.domain.exception.InvalidEntityIdException;
@@ -52,14 +53,19 @@ public class OrderServiceImp implements OrderService {
     @Transactional
     public Order createOrder(NewOrderDTO newOrder) throws InvalidEntityIdException {
         try {
+            Customer customer = customerService.getById(UUID.fromString(newOrder.customerId()));
+
+            if (!customer.getStatus().equals(CustomerStatus.BUSY.toString())) {
+                throw new InvalidEntityIdException("Customer status is not BUSY.");
+            }
+
             boolean isProductOnCustomer = existsProductOnCustomer(UUID.fromString(newOrder.productId()),
-                    UUID.fromString(newOrder.customerId()));
+                    customer.getId());
 
             if (isProductOnCustomer) {
                 throw new InvalidEntityIdException("Product already exists on Customer's order(s).");
             }
 
-            Customer customer = customerService.getById(UUID.fromString(newOrder.customerId()));
             Product product = productService.getById(UUID.fromString(newOrder.productId()));
             Order order = new Order();
 
