@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.api.dto.NewOrderDTO;
+import com.example.demo.api.dto.UpdateOrderDTO;
 import com.example.demo.domain.entity.Customer;
 import com.example.demo.domain.entity.Order;
 import com.example.demo.domain.entity.Product;
@@ -46,8 +47,9 @@ public class OrderServiceImp implements OrderService {
     @Transactional
     public Order createOrder(NewOrderDTO newOrder) throws InvalidEntityIdException {
         try {
-            boolean isProductOnCustomer = existsProductOnCustomer(UUID.fromString(newOrder.productId()), UUID.fromString(newOrder.customerId()));
-            
+            boolean isProductOnCustomer = existsProductOnCustomer(UUID.fromString(newOrder.productId()),
+                    UUID.fromString(newOrder.customerId()));
+
             if (isProductOnCustomer) {
                 throw new InvalidEntityIdException("Product already exists on Customer's order(s).");
             }
@@ -66,6 +68,31 @@ public class OrderServiceImp implements OrderService {
             throw new InvalidEntityIdException("Invalid UUID format.");
         } catch (NoSuchElementException e) {
             throw new InvalidEntityIdException("Customer or Product not found.");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateOrder(UUID id, UpdateOrderDTO updateOrderDTO) throws NoSuchElementException {
+        try {
+            Order order = getById(id);
+            boolean isProductOnCustomer = existsProductOnCustomer(UUID.fromString(updateOrderDTO.productId()),
+                    UUID.fromString(updateOrderDTO.customerId()));
+
+            if (!isProductOnCustomer) {
+                throw new InvalidEntityIdException("Product does not exists on Customer's order(s).");
+            }
+
+            order.setQuantity(updateOrderDTO.quantity());
+            order.setIsActive(updateOrderDTO.isActive());
+
+            orderRepository.save(order);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("Order not found: " + id);
+        } catch (IllegalArgumentException e) {
+            throw new NoSuchElementException("Invalid UUID format.");
+        } catch (InvalidEntityIdException e) {
+            throw new NoSuchElementException(e.getMessage());
         }
     }
 

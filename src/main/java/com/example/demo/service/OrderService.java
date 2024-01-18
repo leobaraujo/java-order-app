@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.api.dto.NewOrderDTO;
+import com.example.demo.api.dto.UpdateOrderDTO;
 import com.example.demo.domain.entity.Order;
 import com.example.demo.domain.exception.InvalidEntityIdException;
 
@@ -18,5 +19,7 @@ public interface OrderService {
     public Order getById(UUID id) throws NoSuchElementException;
 
     public Order createOrder(NewOrderDTO newOrder) throws InvalidEntityIdException;
+
+    public void updateOrder(UUID id, UpdateOrderDTO updateOrderDTO) throws NoSuchElementException;
 
 }
