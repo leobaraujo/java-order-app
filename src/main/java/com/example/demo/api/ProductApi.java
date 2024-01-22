@@ -63,7 +63,7 @@ public class ProductApi {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> upadteProduct(@PathVariable UUID id, @RequestBody @Valid NewProductDTO updateProduct) throws InvalidProductCategoryException {
+    public ResponseEntity<Void> updateProduct(@PathVariable UUID id, @RequestBody @Valid NewProductDTO updateProduct) throws InvalidProductCategoryException {
         try {
             productService.updateProuct(id, updateProduct);
 
