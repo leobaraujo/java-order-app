@@ -12,4 +12,6 @@ public interface PartialPaymentService {
 
     public PartialPayment getById(UUID id) throws NoSuchElementException;
 
+    public List<PartialPayment> getAllByCustomerId(UUID id) throws NoSuchElementException;
+
 }

@@ -29,4 +29,9 @@ public class PartialPaymentServiceImp implements PartialPaymentService {
         return partialPaymentRepository.findById(id).orElseThrow();
     }
 
+    @Override
+    public List<PartialPayment> getAllByCustomerId(UUID id) throws NoSuchElementException {
+        return partialPaymentRepository.findAllByCustomerId(id);
+    }
+
 }
