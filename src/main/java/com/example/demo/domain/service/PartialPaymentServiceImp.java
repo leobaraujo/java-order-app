@@ -6,17 +6,26 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.api.dto.NewPartialPaymentDTO;
+import com.example.demo.domain.entity.Customer;
+import com.example.demo.domain.entity.CustomerStatus;
 import com.example.demo.domain.entity.PartialPayment;
 import com.example.demo.domain.repository.PartialPaymentRepository;
+import com.example.demo.service.CustomerService;
 import com.example.demo.service.PartialPaymentService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PartialPaymentServiceImp implements PartialPaymentService {
 
     private PartialPaymentRepository partialPaymentRepository;
+    private CustomerService customerService;
 
-    public PartialPaymentServiceImp(PartialPaymentRepository partialPaymentRepository) {
+    public PartialPaymentServiceImp(PartialPaymentRepository partialPaymentRepository,
+            CustomerService customerService) {
         this.partialPaymentRepository = partialPaymentRepository;
+        this.customerService = customerService;
     }
 
     @Override
@@ -32,6 +41,31 @@ public class PartialPaymentServiceImp implements PartialPaymentService {
     @Override
     public List<PartialPayment> getAllByCustomerId(UUID id) throws NoSuchElementException {
         return partialPaymentRepository.findAllByCustomerId(id);
+    }
+
+    @Override
+    @Transactional
+    public PartialPayment createPartialPayment(NewPartialPaymentDTO newPartialPaymentDTO) throws IllegalArgumentException {
+        if (newPartialPaymentDTO.amount() < 0) {
+            throw new IllegalArgumentException("Amount value cannot be less than zero.");
+        }
+
+        try {
+            PartialPayment partialPayment = new PartialPayment();
+            Customer customer = customerService.getById(UUID.fromString(newPartialPaymentDTO.customerId()));
+
+            if (!customer.getStatus().equals(CustomerStatus.BUSY.toString())) {
+                throw new IllegalArgumentException("Customer status is not BUSY.");
+            }
+
+            partialPayment.setCustomer(customer);
+            partialPayment.setAmount(newPartialPaymentDTO.amount());
+            partialPayment.setNote(newPartialPaymentDTO.note());
+
+            return partialPaymentRepository.save(partialPayment);
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("Customer not found: " + newPartialPaymentDTO.customerId());
+        }
     }
 
 }

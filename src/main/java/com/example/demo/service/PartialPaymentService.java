@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+import com.example.demo.api.dto.NewPartialPaymentDTO;
 import com.example.demo.domain.entity.PartialPayment;
 
 public interface PartialPaymentService {
@@ -13,5 +14,7 @@ public interface PartialPaymentService {
     public PartialPayment getById(UUID id) throws NoSuchElementException;
 
     public List<PartialPayment> getAllByCustomerId(UUID id) throws NoSuchElementException;
+
+    public PartialPayment createPartialPayment(NewPartialPaymentDTO newPartialPaymentDTO) throws IllegalArgumentException;
 
 }
