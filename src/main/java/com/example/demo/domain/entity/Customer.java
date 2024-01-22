@@ -33,14 +33,20 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer")
+    private List<PartialPayment> partialPayments = new ArrayList<>();
+
     public Customer() {
     }
 
-    public Customer(UUID id, @NotNull Integer number, @NotNull String status, List<Order> orders) {
+    public Customer(UUID id, @NotNull Integer number, @NotNull String status, List<Order> orders,
+            List<PartialPayment> partialPayments) {
         this.id = id;
         this.number = number;
         this.status = status;
         this.orders = orders;
+        this.partialPayments = partialPayments;
     }
 
     public UUID getId() {
@@ -73,6 +79,14 @@ public class Customer implements Serializable {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public List<PartialPayment> getPartialPayments() {
+        return partialPayments;
+    }
+
+    public void setPartialPayments(List<PartialPayment> partialPayments) {
+        this.partialPayments = partialPayments;
     }
 
     @Override
