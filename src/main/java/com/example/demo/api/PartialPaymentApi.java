@@ -42,4 +42,11 @@ public class PartialPaymentApi {
         }
     }
 
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<List<PartialPayment>> getAllByCustomerId(@PathVariable UUID id) {
+        List<PartialPayment> partialPaymentsList = partialPaymentService.getAllByCustomerId(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(partialPaymentsList);
+    }
+
 }
