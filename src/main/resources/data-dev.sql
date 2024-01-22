@@ -1,5 +1,7 @@
 /* CUSTOMER TABLE */
-INSERT INTO customer (id, number, status) VALUES ('a27f18d7-97d2-4063-b5e5-7f0e57fd7094', 1, 'BUSY');
+INSERT INTO customer (id, number, status) VALUES ('54fb41b4-919d-44e3-b53b-fe475adfe127', 1, 'AVAILABLE');
+INSERT INTO customer (id, number, status) VALUES ('a27f18d7-97d2-4063-b5e5-7f0e57fd7094', 2, 'BUSY');
+INSERT INTO customer (id, number, status) VALUES ('92c95fad-1c89-44f5-862a-08e2586dd976', 3, 'MAINTENANCE');
 
 /* PRODUCT TABLE */
 INSERT INTO product (id, name, buy_price, sell_price, img_url, category) VALUES ('49677434-1020-43d1-b245-aa20e070156a', 'Bebida A', 5.0, 10.0, 'https://img.freepik.com/vetores-gratis/copo-de-agua-isolado_1368-2666.jpg', 'CERVEJA');
