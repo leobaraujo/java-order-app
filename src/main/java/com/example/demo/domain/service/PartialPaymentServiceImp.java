@@ -46,25 +46,27 @@ public class PartialPaymentServiceImp implements PartialPaymentService {
     @Override
     @Transactional
     public PartialPayment createPartialPayment(NewPartialPaymentDTO newPartialPaymentDTO) throws IllegalArgumentException {
-        if (newPartialPaymentDTO.amount() < 0) {
+        if (newPartialPaymentDTO.amount() < 0.0) {
             throw new IllegalArgumentException("Amount value cannot be less than zero.");
         }
 
         try {
-            PartialPayment partialPayment = new PartialPayment();
             Customer customer = customerService.getById(UUID.fromString(newPartialPaymentDTO.customerId()));
-
+            
             if (!customer.getStatus().equals(CustomerStatus.BUSY.toString())) {
                 throw new IllegalArgumentException("Customer status is not BUSY.");
             }
 
+            PartialPayment partialPayment = new PartialPayment();
             partialPayment.setCustomer(customer);
             partialPayment.setAmount(newPartialPaymentDTO.amount());
             partialPayment.setNote(newPartialPaymentDTO.note());
 
             return partialPaymentRepository.save(partialPayment);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid UUID format.");
         } catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("Customer not found: " + newPartialPaymentDTO.customerId());
+            throw new IllegalArgumentException("Customer not found.");
         }
     }
 
