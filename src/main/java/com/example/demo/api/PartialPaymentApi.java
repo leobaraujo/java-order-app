@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.demo.api.dto.NewPartialPaymentDTO;
+import com.example.demo.api.dto.UpdatePartialPaymentDTO;
 import com.example.demo.domain.entity.PartialPayment;
 import com.example.demo.service.PartialPaymentService;
 
@@ -62,6 +64,13 @@ public class PartialPaymentApi {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(partialPayment.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePartialPayment(@PathVariable UUID id, @RequestBody @Valid UpdatePartialPaymentDTO updatePartialPaymentDTO) {
+        partialPaymentService.updatePartialPayment(id, updatePartialPaymentDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
