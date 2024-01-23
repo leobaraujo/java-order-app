@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.api.dto.NewPartialPaymentDTO;
+import com.example.demo.api.dto.UpdatePartialPaymentDTO;
 import com.example.demo.domain.entity.Customer;
 import com.example.demo.domain.entity.CustomerStatus;
 import com.example.demo.domain.entity.PartialPayment;
@@ -46,13 +47,13 @@ public class PartialPaymentServiceImp implements PartialPaymentService {
     @Override
     @Transactional
     public PartialPayment createPartialPayment(NewPartialPaymentDTO newPartialPaymentDTO) throws IllegalArgumentException {
-        if (newPartialPaymentDTO.amount() < 0.0) {
+        if (newPartialPaymentDTO.amount() <= 0.0) {
             throw new IllegalArgumentException("Amount value cannot be less than zero.");
         }
 
         try {
             Customer customer = customerService.getById(UUID.fromString(newPartialPaymentDTO.customerId()));
-            
+
             if (!customer.getStatus().equals(CustomerStatus.BUSY.toString())) {
                 throw new IllegalArgumentException("Customer status is not BUSY.");
             }
@@ -67,6 +68,29 @@ public class PartialPaymentServiceImp implements PartialPaymentService {
             throw new IllegalArgumentException("Invalid UUID format.");
         } catch (NoSuchElementException e) {
             throw new IllegalArgumentException("Customer not found.");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updatePartialPayment(UUID id, UpdatePartialPaymentDTO updatePartialPaymentDTO) {
+        if (updatePartialPaymentDTO.amount() <= 0.0) {
+            throw new IllegalArgumentException("Amount value cannot be less than zero.");
+        }
+
+        try {
+            PartialPayment partialPayment = getById(id);
+
+            if (!partialPayment.getCustomer().getStatus().equals(CustomerStatus.BUSY.toString())) {
+                throw new IllegalArgumentException("Customer status is not BUSY.");
+            }
+
+            partialPayment.setAmount(updatePartialPaymentDTO.amount());
+            partialPayment.setNote(updatePartialPaymentDTO.note());
+
+            partialPaymentRepository.save(partialPayment);
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("Partial payment not found.");
         }
     }
 
