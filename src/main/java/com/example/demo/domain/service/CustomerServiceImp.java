@@ -10,6 +10,7 @@ import com.example.demo.domain.entity.Customer;
 import com.example.demo.domain.entity.CustomerStatus;
 import com.example.demo.domain.repository.CustomerRepository;
 import com.example.demo.domain.repository.OrderRepository;
+import com.example.demo.domain.repository.PartialPaymentRepository;
 import com.example.demo.service.CustomerService;
 
 import jakarta.transaction.Transactional;
@@ -19,10 +20,12 @@ public class CustomerServiceImp implements CustomerService {
 
     private CustomerRepository customerRepository;
     private OrderRepository orderRepository;
+    private PartialPaymentRepository partialPaymentRepository;
 
-    public CustomerServiceImp(CustomerRepository customerRepository, OrderRepository orderRepository) {
+    public CustomerServiceImp(CustomerRepository customerRepository, OrderRepository orderRepository, PartialPaymentRepository partialPaymentRepository) {
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;
+        this.partialPaymentRepository = partialPaymentRepository;
     }
 
     @Override
@@ -50,6 +53,7 @@ public class CustomerServiceImp implements CustomerService {
 
         if (newStatus.equals(CustomerStatus.AVAILABLE)) {
             orderRepository.deleteAllByCustomerId(customer.getId());
+            partialPaymentRepository.deleteAllByCustomerId(customer.getId());
         }
 
         customer.setStatus(newStatus.toString());

@@ -11,4 +11,6 @@ public interface PartialPaymentRepository extends JpaRepository<PartialPayment, 
 
     public List<PartialPayment> findAllByCustomerId(UUID customerId);
 
+    public void deleteAllByCustomerId(UUID customerId);
+
 }
