@@ -94,4 +94,9 @@ public class PartialPaymentServiceImp implements PartialPaymentService {
         }
     }
 
+    @Override
+    public void deletePartialPaymentById(UUID id) throws IllegalArgumentException {
+        partialPaymentRepository.deleteById(id);
+    }
+
 }

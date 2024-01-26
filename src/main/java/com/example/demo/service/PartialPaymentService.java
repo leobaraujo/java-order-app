@@ -20,4 +20,6 @@ public interface PartialPaymentService {
 
     public void updatePartialPayment(UUID id, UpdatePartialPaymentDTO updatePartialPaymentDTO);
 
+    public void deletePartialPaymentById(UUID id) throws IllegalArgumentException;
+
 }
