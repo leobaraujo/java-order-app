@@ -1,6 +1,8 @@
 package com.example.demo.domain.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,11 @@ public class UserServiceImp implements UserService {
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getById(UUID id) throws NoSuchElementException {
+        return userRepository.findById(id).orElseThrow();
     }
 
 }
