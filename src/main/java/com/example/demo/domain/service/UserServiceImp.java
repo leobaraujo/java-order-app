@@ -55,4 +55,30 @@ public class UserServiceImp implements UserService {
         return userRepository.save(newUser);
     }
 
+    @Override
+    @Transactional
+    public void update(UUID id, NewUserDTO newUserDTO) throws Exception {
+        Optional<User> userOpt = userRepository.findById(id);
+
+        if (!userOpt.isPresent()) {
+            throw new NoSuchElementException("User not found.");
+        }
+
+        User user = userOpt.get();
+
+        if (!user.getUsername().equals(newUserDTO.username()) && isUsernameBusy(newUserDTO.username())) {
+            throw new InvalidUsernameException("Invalid username.");
+        }
+
+        String hashedPassword = new BCryptPasswordEncoder().encode(newUserDTO.password());
+
+        user.setUsername(newUserDTO.username());
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+    }
+
+    private boolean isUsernameBusy(String username) {
+        return userRepository.findOneByUsername(username).isPresent();
+    }
+
 }

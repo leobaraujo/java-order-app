@@ -15,4 +15,6 @@ public interface UserService {
 
     public User create(NewUserDTO newUserDTO) throws Exception;
 
+    public void update(UUID id, NewUserDTO newUserDTO) throws Exception;
+
 }

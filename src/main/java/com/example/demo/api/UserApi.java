@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,13 @@ public class UserApi {
                 .buildAndExpand(newUser.getId()).toUri();
 
         return ResponseEntity.created(newResourceLocation).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable UUID id, @RequestBody @Valid NewUserDTO newUserDTO) throws Exception {
+        userService.update(id, newUserDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
