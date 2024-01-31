@@ -17,4 +17,6 @@ public interface UserService {
 
     public void update(UUID id, NewUserDTO newUserDTO) throws Exception;
 
+    public void updateRole(UUID id, String newRole) throws Exception;
+
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.api.dto.NewUserDTO;
 import com.example.demo.domain.entity.User;
 import com.example.demo.domain.entity.UserRoles;
+import com.example.demo.domain.exception.InvalidRoleException;
 import com.example.demo.domain.exception.InvalidUsernameException;
 import com.example.demo.domain.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -39,9 +40,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public User create(NewUserDTO newUserDTO) throws Exception {
-        Optional<User> userDb = userRepository.findOneByUsername(newUserDTO.username());
-        
-        if (userDb.isPresent()) {
+        if (isUsernameBusy(newUserDTO.username())) {
             throw new InvalidUsernameException("Invalid username.");
         }
 
@@ -74,6 +73,34 @@ public class UserServiceImp implements UserService {
 
         user.setUsername(newUserDTO.username());
         user.setPassword(hashedPassword);
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateRole(UUID id, String newRole) throws Exception {
+        boolean isValidRole = false;
+
+        for (UserRoles role : UserRoles.values()) {
+            if (newRole.equals(role.toString())) {
+                isValidRole = true;
+                break;
+            }
+        }
+
+        if (!isValidRole) {
+            throw new InvalidRoleException("Invalid role: " + newRole);
+        }
+
+        Optional<User> userOpt = userRepository.findById(id);
+
+        if (!userOpt.isPresent()) {
+            throw new NoSuchElementException("User not found.");
+        }
+
+        User user = userOpt.get();
+
+        user.setRole(newRole);
         userRepository.save(user);
     }
 
