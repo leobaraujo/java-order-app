@@ -25,7 +25,6 @@ public class User implements Serializable {
     private String username;
 
     @NotBlank
-    @Size(min = 4, max = 32)
     private String password;
 
     @NotNull
