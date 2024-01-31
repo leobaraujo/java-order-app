@@ -104,6 +104,17 @@ public class UserServiceImp implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    @Transactional
+    public boolean delete(UUID id) {
+        if (id == null) {
+            return false;
+        }
+
+        userRepository.deleteById(id);
+        return true;
+    }
+
     private boolean isUsernameBusy(String username) {
         return userRepository.findOneByUsername(username).isPresent();
     }

@@ -19,4 +19,6 @@ public interface UserService {
 
     public void updateRole(UUID id, String newRole) throws Exception;
 
+    public boolean delete(UUID id);
+
 }

@@ -11,3 +11,7 @@ INSERT INTO order_table (id, customer_id, product_id, quantity, is_active) VALUE
 
 /* PARTIAL PAYMENT TABLE */
 INSERT INTO partial_payment (id, customer_id, amount, note) VALUES ('bbbd6289-7c73-4b67-92a4-e80dbebfad71', 'a27f18d7-97d2-4063-b5e5-7f0e57fd7094', 50.0, 'John Doe');
+
+/* USER TABLE */
+INSERT INTO user_table (id, username, password, role) VALUES ('443bc19d-9597-40cd-bd77-5df2d4ade02a', 'admin', '$2a$10$BOtoNV8p8LX02SCgSfHQtO4LTKZDzASCNhgnhCMk2WqY4sCRfmRde', 'ADMIN');
+INSERT INTO user_table (id, username, password, role) VALUES ('938b0604-d80f-4a9a-9f44-ff207ca2115b', 'worker', '$2a$10$8tI8heW7pNkgl7cHuYrCt.zp.bpAIvR/1fiu6EbcVgWd9/vEEwfvC', 'WORKER');
