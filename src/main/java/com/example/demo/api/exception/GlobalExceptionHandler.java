@@ -17,6 +17,7 @@ import com.example.demo.api.dto.GlobalExceptionDTO;
 import com.example.demo.api.dto.InputFieldError;
 import com.example.demo.domain.exception.InvalidEntityIdException;
 import com.example.demo.domain.exception.InvalidProductCategoryException;
+import com.example.demo.domain.exception.InvalidRoleException;
 import com.example.demo.domain.exception.InvalidUsernameException;
 
 import jakarta.validation.ConstraintViolationException;
@@ -75,6 +76,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidUsernameException.class)
     public ResponseEntity<GlobalExceptionDTO> invalidUsernameHandler(InvalidUsernameException e) {
+        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+    }
+
+    @ExceptionHandler(InvalidRoleException.class)
+    public ResponseEntity<GlobalExceptionDTO> invalidRoleHandler(InvalidRoleException e) {
         return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.demo.api.dto.NewUserDTO;
+import com.example.demo.api.dto.UpdateUserRoleDTO;
 import com.example.demo.domain.entity.User;
 import com.example.demo.service.UserService;
 
@@ -62,6 +63,13 @@ public class UserApi {
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable UUID id, @RequestBody @Valid NewUserDTO newUserDTO) throws Exception {
         userService.update(id, newUserDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+    
+    @PutMapping("/{id}/role")
+    public ResponseEntity<Void> updateRole(@PathVariable UUID id, @RequestBody @Valid UpdateUserRoleDTO updateUserRoleDTO) throws Exception {
+        userService.updateRole(id, updateUserRoleDTO.role());
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
