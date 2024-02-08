@@ -18,6 +18,7 @@ import com.example.demo.api.dto.InputFieldError;
 import com.example.demo.domain.exception.InvalidEntityIdException;
 import com.example.demo.domain.exception.InvalidProductCategoryException;
 import com.example.demo.domain.exception.InvalidRoleException;
+import com.example.demo.domain.exception.InvalidUserException;
 import com.example.demo.domain.exception.InvalidUsernameException;
 
 import jakarta.validation.ConstraintViolationException;
@@ -28,19 +29,19 @@ public class GlobalExceptionHandler {
     // Invalid path variable
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<GlobalExceptionDTO> noResourceFoundHandler(NoResourceFoundException e) {
-        return badRequestResponse(HttpStatus.NOT_FOUND, new String[] { e.getMessage() });
+        return response(HttpStatus.NOT_FOUND, new String[] { e.getMessage() });
     }
 
     // Invalid path variable type
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<GlobalExceptionDTO> illegalArgumentHandler(IllegalArgumentException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+        return response(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     // Missing request body
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<GlobalExceptionDTO> httpMessageNotReadableHandler(HttpMessageNotReadableException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+        return response(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     // Missing field on request body
@@ -50,41 +51,46 @@ public class GlobalExceptionHandler {
                 .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
 
-        return badRequestResponse(HttpStatus.BAD_REQUEST, errors.toArray());
+        return response(HttpStatus.BAD_REQUEST, errors.toArray());
     }
 
     // Invalid field type in request body
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<GlobalExceptionDTO> constraintViolationHandler(ConstraintViolationException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+        return response(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<GlobalExceptionDTO> noSuchElementHandler(NoSuchElementException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+        return response(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     @ExceptionHandler(InvalidProductCategoryException.class)
     public ResponseEntity<GlobalExceptionDTO> invalidProductCategoryHandler(InvalidProductCategoryException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+        return response(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     @ExceptionHandler(InvalidEntityIdException.class)
     public ResponseEntity<GlobalExceptionDTO> invalidEntityIdHandler(InvalidEntityIdException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+        return response(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     @ExceptionHandler(InvalidUsernameException.class)
     public ResponseEntity<GlobalExceptionDTO> invalidUsernameHandler(InvalidUsernameException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+        return response(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
     @ExceptionHandler(InvalidRoleException.class)
     public ResponseEntity<GlobalExceptionDTO> invalidRoleHandler(InvalidRoleException e) {
-        return badRequestResponse(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
+        return response(HttpStatus.BAD_REQUEST, new String[] { e.getMessage() });
     }
 
-    private ResponseEntity<GlobalExceptionDTO> badRequestResponse(HttpStatus status, Object[] errors) {
+    @ExceptionHandler(InvalidUserException.class)
+    public ResponseEntity<GlobalExceptionDTO> invalidUserHandler(InvalidUserException e) {
+        return response(HttpStatus.NOT_FOUND, new String[] { e.getMessage() });
+    }
+
+    private ResponseEntity<GlobalExceptionDTO> response(HttpStatus status, Object[] errors) {
         return ResponseEntity.status(status).body(new GlobalExceptionDTO(
                 Instant.now(),
                 status.value(),
