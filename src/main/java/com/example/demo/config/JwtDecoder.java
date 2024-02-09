@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 @Component
@@ -19,7 +18,7 @@ public class JwtDecoder {
     public DecodedJWT decode(String token) {
         try {
             return JWT.require(Algorithm.HMAC256(jwtProperties.getSecretKey())).build().verify(token);
-        } catch(JWTDecodeException e) {
+        } catch(Exception e) {
             return null;
         }
     }
