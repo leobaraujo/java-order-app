@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.api.dto.AccessTokenDTO;
 import com.example.demo.api.dto.LoginDTO;
+import com.example.demo.domain.exception.InvalidUserException;
 import com.example.demo.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -24,7 +25,7 @@ public class AuthApi {
     }
 
     @PostMapping
-    public ResponseEntity<AccessTokenDTO> authLogin(@RequestBody @Valid LoginDTO loginDTO) throws Exception {
+    public ResponseEntity<AccessTokenDTO> authLogin(@RequestBody @Valid LoginDTO loginDTO) throws InvalidUserException {
         String userId = authService.validateCredentials(loginDTO.username(), loginDTO.password());
         var token = new AccessTokenDTO(authService.generateJwt(userId));
 
