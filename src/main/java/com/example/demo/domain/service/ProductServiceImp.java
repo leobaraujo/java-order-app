@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.api.dto.NewProductDTO;
@@ -42,13 +43,7 @@ public class ProductServiceImp implements ProductService {
         }
 
         Product product = new Product();
-
-        product.setName(newProduct.name());
-        product.setBuyPrice(newProduct.buyPrice());
-        product.setSellPrice(newProduct.sellPrice());
-        product.setImgUrl(newProduct.imgUrl());
-        product.setCategory(newProduct.category());
-
+        BeanUtils.copyProperties(newProduct, product);
         return productRepository.save(product);
     }
 
@@ -61,12 +56,7 @@ public class ProductServiceImp implements ProductService {
             throw new InvalidProductCategoryException("Invalid Product category: " + updatedProduct.category());
         }
 
-        currentProduct.setName(updatedProduct.name());
-        currentProduct.setBuyPrice(updatedProduct.buyPrice());
-        currentProduct.setSellPrice(updatedProduct.sellPrice());
-        currentProduct.setImgUrl(updatedProduct.imgUrl());
-        currentProduct.setCategory(updatedProduct.category());
-
+        BeanUtils.copyProperties(updatedProduct, currentProduct);
         productRepository.save(currentProduct);
     }
 
@@ -77,8 +67,8 @@ public class ProductServiceImp implements ProductService {
     }
 
     private boolean isValidCategory(String category) {
-        for (int i = 0; i < ProductCategory.values().length; i++) {
-            if (category.equals(ProductCategory.values()[i].toString())) {
+        for (ProductCategory productCategory : ProductCategory.values()) {
+            if (category.equals(productCategory.toString())) {
                 return true;
             }
         }
