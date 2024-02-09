@@ -40,13 +40,14 @@ public class CustomerServiceImp implements CustomerService {
 
     @Override
     @Transactional
-    public CustomerStatus updateStatus(UUID id) throws NoSuchElementException {
+    public void updateStatus(UUID id) throws NoSuchElementException {
         Customer customer = getById(id);
+        CustomerStatus[] statusList = CustomerStatus.values();
         CustomerStatus newStatus = CustomerStatus.AVAILABLE;
 
-        for (int i = 0; i < CustomerStatus.values().length; i++) {
-            if (CustomerStatus.values()[i].toString().equals(customer.getStatus())) {
-                newStatus = i + 1 < CustomerStatus.values().length ? CustomerStatus.values()[i + 1] : CustomerStatus.AVAILABLE;
+        for (int i = 0; i < statusList.length; i++) {
+            if (statusList[i].toString().equals(customer.getStatus())) {
+                newStatus = i + 1 < statusList.length ? statusList[i + 1] : CustomerStatus.AVAILABLE;
                 break;
             }
         }
@@ -58,8 +59,6 @@ public class CustomerServiceImp implements CustomerService {
 
         customer.setStatus(newStatus.toString());
         customerRepository.save(customer);
-
-        return newStatus;
     }
 
 }
