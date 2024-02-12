@@ -22,7 +22,7 @@ public class SecurityConfig {
             "/api/customer/**",
             "/api/product/**",
             "/api/order/**",
-            "/api/partialPayment/**"
+            "/api/partialpayment/**"
     };
 
     private static final String[] ADMIN_PATH = {
