@@ -23,10 +23,17 @@ import com.example.demo.domain.entity.Order;
 import com.example.demo.domain.exception.InvalidEntityIdException;
 import com.example.demo.service.OrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/order")
+@Tag(name = "Order")
+@SecurityRequirement(name = "Bearer Token")
 public class OrderApi {
 
     private OrderService orderService;
@@ -36,6 +43,10 @@ public class OrderApi {
     }
 
     @GetMapping
+    @Operation(summary = "Get all orders")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns all orders as array")
+    })
     public ResponseEntity<List<Order>> getAll() {
         List<Order> orderList = orderService.getAll();
 
@@ -43,6 +54,11 @@ public class OrderApi {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get order by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns the order"),
+            @ApiResponse(responseCode = "404", description = "If order is not found")
+    })
     public ResponseEntity<Order> getById(@PathVariable UUID id) {
         try {
             Order order = orderService.getById(id);
@@ -54,6 +70,10 @@ public class OrderApi {
     }
 
     @GetMapping("/customer/{id}")
+    @Operation(summary = "Get all orders from customer id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns all orders as array")
+    })
     public ResponseEntity<List<Order>> getAllByCustomerId(@PathVariable UUID id) {
         List<Order> customerOrders = orderService.getAllByCustomerId(id);
 
@@ -61,6 +81,11 @@ public class OrderApi {
     }
 
     @PostMapping
+    @Operation(summary = "Create a new order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "If is invalid id, customer or product not found, customer is not BUSY or order already exists on customer")
+    })
     public ResponseEntity<Void> createOrder(@RequestBody @Valid NewOrderDTO newOrderDTO)
             throws InvalidEntityIdException {
         Order order = orderService.createOrder(newOrderDTO);
@@ -71,6 +96,11 @@ public class OrderApi {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "If is invalid id, order not found or product does not exists on customer's order(s)")
+    })
     public ResponseEntity<Void> updateOrder(@PathVariable UUID id,
             @RequestBody @Valid UpdateOrderDTO updateOrderDTO) throws NoSuchElementException {
         orderService.updateOrder(id, updateOrderDTO);
@@ -79,6 +109,10 @@ public class OrderApi {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Success")
+    })
     public ResponseEntity<Void> deleteOrderById(@PathVariable UUID id) {
         orderService.deleteOrderById(id);
 

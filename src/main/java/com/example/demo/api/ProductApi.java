@@ -23,10 +23,17 @@ import com.example.demo.domain.entity.ProductCategory;
 import com.example.demo.domain.exception.InvalidProductCategoryException;
 import com.example.demo.service.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/product")
+@Tag(name = "Product")
+@SecurityRequirement(name = "Bearer Token")
 public class ProductApi {
 
     private ProductService productService;
@@ -36,6 +43,10 @@ public class ProductApi {
     }
 
     @GetMapping
+    @Operation(summary = "Get all products")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns all product as array")
+    })
     public ResponseEntity<List<Product>> getAll() {
         List<Product> productList = productService.getAll();
 
@@ -43,6 +54,11 @@ public class ProductApi {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get product by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns the product"),
+            @ApiResponse(responseCode = "404", description = "If product is not found")
+    })
     public ResponseEntity<Product> getById(@PathVariable UUID id) {
         try {
             Product product = productService.getById(id);
@@ -54,6 +70,11 @@ public class ProductApi {
     }
 
     @PostMapping
+    @Operation(summary = "Create a new product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "If product category is invalid")
+    })
     public ResponseEntity<Void> createProduct(@RequestBody @Valid NewProductDTO newProductDTO) throws InvalidProductCategoryException {
         Product createdProduct = productService.createProduct(newProductDTO);
         URI resourceLocation = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -63,6 +84,11 @@ public class ProductApi {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "If product category is invalid")
+    })
     public ResponseEntity<Void> updateProduct(@PathVariable UUID id, @RequestBody @Valid NewProductDTO updateProduct) throws InvalidProductCategoryException {
         try {
             productService.updateProuct(id, updateProduct);
@@ -74,6 +100,10 @@ public class ProductApi {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Success")
+    })
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
 
@@ -81,6 +111,10 @@ public class ProductApi {
     }
 
     @GetMapping("/categories")
+    @Operation(summary = "Get all product categories")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns all product category as array")
+    })
     public ResponseEntity<String[]> getAllCategories() {
         String[] categories = new String[ProductCategory.values().length];
 
