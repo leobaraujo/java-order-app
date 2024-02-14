@@ -15,7 +15,9 @@ public class SecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private static final String[] WHITELIST_PATH = {
-            "/api/auth"
+            "/api/auth",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
     };
 
     private static final String[] WORKER_PATH = {
