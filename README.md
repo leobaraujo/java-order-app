@@ -8,7 +8,7 @@ _java-order-app_ é uma __API REST__ criada com a linguagem de programação Jav
 
 A API permite que o usuário crie outros usuários, cadastro de produtos, pedidos e pagamentos parciais. O app foi imaginado para o cenário de bares e restaurantes.
 
-[![License](https://img.shields.io/npm/l/react)](https://github.com/rockyracum/java-order-app/blob/main/LICENSE) 
+[![License](https://img.shields.io/npm/l/react)](https://github.com/leobaraujo/java-order-app/blob/main/LICENSE) 
 
 ## Tecnologias
 
@@ -65,10 +65,10 @@ security.admin.password=SENHA_DO_USUÁRIO_ADMINISTRATIVO_PADRÂO
 
 ```shell
 # Baixar a imagem do Docker Hub
-docker pull rockyracum/java-order-app:latest
+docker pull leobaraujo/java-order-app:latest
 
 # Criar um container a partir da imagem, expôr a porta 8080 e nomear o container
-docker run -p 8080:8080 --name java-order-app rockyracum/java-order-app:latest
+docker run -p 8080:8080 --name java-order-app leobaraujo/java-order-app:latest
 
 # A aplicação já está em execução neste ponto, utilize os comandos abaixo para desligar a aplicação
 
@@ -82,7 +82,7 @@ docker start java-order-app
 docker rm java-order-app
 
 # Remover imagem
-docker rmi rockyracum/java-order-app:latest
+docker rmi leobaraujo/java-order-app:latest
 ```
 
 ### Git
@@ -91,7 +91,7 @@ docker rmi rockyracum/java-order-app:latest
 
 ```shell
 # Clonar o repositório git
-git clone https://github.com/rockyracum/java-order-app.git
+git clone https://github.com/leobaraujo/java-order-app.git
 
 # Entrar na pasta do repositório
 cd java-order-app
